@@ -2,24 +2,24 @@ import unittest
 from main import *
 
 
-class QuickSortTest(unittest.TestCase):
-    def test_odd_list(self):
-        self.assertEqual(quick_sort([19, 2, 45, 10, 6, 11, 121, 5, 33, 27, 13], 3),
-                         "The number is  33, The index is  8")
+class MyTestCase(unittest.TestCase):
+    def test_ordinary(self):
+        self.assertEqual(binary_search([30, 11, 23, 4, 20], 5), 30)
 
-    def test_pair_list(self):
-        self.assertEqual(quick_sort([19, 2, 45, 10, 6, 11, 121, 5, 33, 27], 5), "The number is  19, The index is  5")
+    def test_the_same_piles(self):
+        self.assertEqual(binary_search([7, 7, 7, 7, 7, 7, 7], 7), 7)
 
-    def test_k_is_over(self):
-        self.assertEqual(quick_sort([19, 2, 45, 10, 6, 11, 121, 5, 33, 27, 13], 13),
-                         "k is greater than the length of the list")
+    def test_list_bounds(self):
+        with self.assertRaises(ValueError):
+            binary_search([-3, 6, 7, 11], 8)
 
-    def test_find_first_element(self):
-        self.assertEqual(quick_sort([19], 1),
-                         (19, 0))
+    def test_time_bounds(self):
+        with self.assertRaises(ValueError):
+            binary_search([3, 6, 7, 11], 2)
 
-    def test_empty_list(self):
-        self.assertEqual(quick_sort([], 1), "your list is empty")
+    def test_pile_bounds(self):
+        with self.assertRaises(ValueError):
+            binary_search([0.5, 6, 7, 11], 4)
 
 
 if __name__ == '__main__':

@@ -1,47 +1,55 @@
-def quick_sort(lst, k):
-    if len(lst) == 0:
-        return "your list is empty"
-    elif len(lst) == 1:
-        return lst[0], 0
-    elif len(lst) >= k:
-        quick_sort_helper(lst, 0, len(lst) - 1, k)
-        return f"The number is  {lst[-k]}, The index is  {len(lst) - k}"
-    else:
-        return "k is greater than the length of the list"
+piles_of_bananas = [3, 6, 7, 11]
+bypass_time = 8
 
 
-def quick_sort_helper(lst, low, high, k):
-    if low < high:
-        split_point = partition(lst, low, high)
-        if split_point == len(lst) - k:
-            return lst[split_point], split_point
-        elif split_point < len(lst) - k:
-            return quick_sort_helper(lst, split_point + 1, high, k)
+# piles_of_bananas = [30, 11, 23, 4, 20]
+# bypass_time = 5
+
+
+# piles_of_bananas = [30, 11, 23, 4, 20]
+# bypass_time = 6
+
+
+# answer for first ex is 4
+# answer for second ex is 30
+# answer for thir ex is 23
+def binary_search(lst, hour):
+    check_condition(lst, hour)
+    high = max(lst)
+    low = 1
+    while low <= high:
+        middle = (low + high) // 2
+        guess = count_hour(lst, middle)
+        if guess == hour:
+            return middle
+        if guess < hour:
+            high = middle - 1
         else:
-            return quick_sort_helper(lst, low, split_point - 1, k)
+            low = middle + 1
 
 
-def partition(lst, low, high):
-    pivot_value = lst[low]
-    left_mark = low + 1
-    right_mark = high
-    done = False
+def count_hour(lst, middle):
+    total_hour = 0
+    for i in lst:
 
-    while not done:
-        while left_mark <= right_mark and lst[left_mark] <= pivot_value:
-            left_mark += 1
-        while right_mark >= left_mark and lst[right_mark] >= pivot_value:
-            right_mark -= 1
-
-        if right_mark < left_mark:
-            done = True
-        else:
-            lst[left_mark], lst[right_mark] = lst[right_mark], lst[left_mark]
-
-    lst[low], lst[right_mark] = lst[right_mark], lst[low]
-    return right_mark
+        whole_num = i // middle
+        if i % middle != 0:
+            whole_num = whole_num + 1
+        total_hour = total_hour + whole_num
+    return total_hour
 
 
-# lst = [19, 2, 45, 31, 6, 11, 121, 27]  # 2,6,11,19,27,31,45,121
-lst = [19, 2, 45, 10, 6, 11, 121, 5, 33, 27]  # 2,5,6,10,11,19,27,33,45,121
-print(quick_sort(lst, 5))
+def check_condition(lst, time):
+    if lst.__len__() < 1 or lst.__len__() > 10 ** 4:
+        raise ValueError("Your list is out of bounds")
+
+    if time < len(lst) or time > 10 ** 9:
+        raise ValueError("Your time is out of bounds")
+
+    for i in lst:
+        if i < 1 or i > 10 ** 9:
+            raise ValueError("Check piles in list")
+
+
+result = binary_search(piles_of_bananas, bypass_time)
+print(result)
