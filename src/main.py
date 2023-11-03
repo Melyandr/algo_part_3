@@ -57,7 +57,7 @@ def findAllMotherVertices(adj):
 
 
 if __name__ == "__main__":
-    with open("input2.txt", "r") as input_file:
+    with open("../test/input2.txt", "r") as input_file:
         lines = input_file.readlines()
 
     adj = []
@@ -67,6 +67,6 @@ if __name__ == "__main__":
 
     motherVertices = findAllMotherVertices(adj)
 
-    with open("output.txt", "w") as output_file:
+    with open("../test/output.txt", "w") as output_file:
         output_file.writelines(str(motherVertices))
         output_file.close()
