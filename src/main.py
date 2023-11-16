@@ -1,72 +1,69 @@
-def dfs_helper(vertex, adj, visited):
-    if visited[vertex]:
-        return
+def couples_for_wedding(graph):
+    first_tribe = set()
+    second_tribe = set()
+    for person in graph[1]:
+        first_tribe.add(person)
 
-    visited[vertex] = True
+    for person_first_tribe in graph[1]:
+        for sublist in graph[2:]:
+            if person_first_tribe in sublist:
+                for new_person in sublist:
+                    if new_person not in graph[1]:
+                        first_tribe.add(new_person)
+                        graph[1].append(new_person)
+                        sublist_for_removing = sublist
+                graph.remove(sublist_for_removing)
 
-    for adjacency_vertex in adj[vertex]:
-        if not visited[adjacency_vertex]:
-            dfs_helper(adjacency_vertex, adj, visited)
+    second_tribe.update(graph[2])
+
+    odd_numbers = set()
+    paired_numbers = set()
+
+    for person in graph[1]:
+        if person % 2 == 0:
+            paired_numbers.add(person)
+        else:
+            odd_numbers.add(person)
+
+    set_output = set()
+
+    for boy_first_tribe in odd_numbers:
+        for person_second_tribe in graph[2]:
+            if (boy_first_tribe + person_second_tribe) % 2 != 0:
+                set_output.add(f"{boy_first_tribe}/" f"{person_second_tribe}")
+
+    for girl_first_tribe in paired_numbers:
+        for person_second_tribe in graph[2]:
+            if (girl_first_tribe + person_second_tribe) % 2 != 0:
+                set_output.add(f"{girl_first_tribe}/" f"{person_second_tribe}")
+
+    return set_output
 
 
-def get_transpose_graph(adj):
-    n = len(adj)
-    trans_adj = [[] for _ in range(n)]
-    for vertex in range(n):
-        for adjacency_vertex in adj[vertex]:
-            trans_adj[adjacency_vertex].append(vertex)
-    return trans_adj
+def read_from_file():
+    with open("../tests/input.txt", "r") as input_file:
+        lines = input_file.readlines()
+
+    graph = []
+    for line in lines:
+        part = list(map(int, line.split(" ")))
+        graph.append(part)
+    return graph
 
 
-def initialize_visited(n):
-    return [False for _ in range(n)]
+def write_to_file(couples, count):
+    with open("../tests/output.txt", "w") as output_file:
+        if couples:
+            output_file.write(f"Можливі комбінації пар: {count} (")
+            output_file.write((", ".join(couples)))
 
+        output_file.write(")")
 
-def find_all_mother_vertices(adj):
-    n = len(adj)
-    visited = initialize_visited(n)
-
-    last_dfs_called_on = -1
-
-    for vertex in range(n):
-        if not visited[vertex]:
-            dfs_helper(vertex, adj, visited)
-            last_dfs_called_on = vertex
-
-    visited = initialize_visited(n)
-    dfs_helper(last_dfs_called_on, adj, visited)
-
-    for vertex in range(n):
-        if not visited[vertex]:
-            return -1
-
-    motherVertex = last_dfs_called_on
-
-    trans_adj = get_transpose_graph(adj)
-
-    visited = initialize_visited(n)
-    dfs_helper(motherVertex, trans_adj, visited)
-
-    ans = []
-
-    for vertex in range(n):
-        if visited[vertex]:
-            ans.append(vertex)
-
-    return ans[0]
+        output_file.close()
 
 
 if __name__ == "__main__":
-    with open("../test/input2.txt", "r") as input_file:
-        lines = input_file.readlines()
-
-    adj = []
-    for line in lines:
-        part = list(map(int, line.split(" ")))
-        adj.append(part[1:])
-
-    motherVertices = find_all_mother_vertices(adj)
-
-    with open("../test/output.txt", "w") as output_file:
-        output_file.writelines(str(motherVertices))
-        output_file.close()
+    graph = read_from_file()
+    combinations = couples_for_wedding(graph)
+    count_couples = len(combinations)
+    write_to_file(combinations, count_couples)
