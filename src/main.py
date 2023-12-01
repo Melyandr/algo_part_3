@@ -4,7 +4,7 @@ class Node:
         self.end_of_word = False
 
 
-class PrefixTree:
+class PrefixTrie:
     def __init__(self):
         self.root = Node()
 
@@ -37,24 +37,15 @@ class PrefixTree:
         return True
 
 
-def fill_words_to_trie(patterns) -> PrefixTree:
-    obj = PrefixTree()
+def fill_words_to_trie(patterns) -> PrefixTrie:
+    obj = PrefixTrie()
     for i in patterns:
         obj.insert(i)
     return obj
 
 
 if __name__ == "__main__":
-    # obj = PrefixTree()
-    # obj.insert("dog")
-    # obj.insert("dos")
-    # obj.insert("do")
-    # obj.insert("mul")
-    # print(obj.starts_with("do"))
-    # print(obj.search("dos"))
     patterns = ["do", "dos", "dog", "mul"]
     obj_with_patterns = fill_words_to_trie(patterns)
-    print(obj_with_patterns.search("mul"))
-    print(obj_with_patterns.starts_with("p"))
 
-    # print(obj_with_patterns)
+

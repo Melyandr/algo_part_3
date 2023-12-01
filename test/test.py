@@ -1,10 +1,10 @@
 import unittest
-from src.main import PrefixTree
+from src.main import PrefixTrie
 
 
 class TestPrefixTree(unittest.TestCase):
     def setUp(self):
-        self.obj = PrefixTree()
+        self.obj = PrefixTrie()
         self.obj.insert("dog")
         self.obj.insert("dos")
         self.obj.insert("do")
